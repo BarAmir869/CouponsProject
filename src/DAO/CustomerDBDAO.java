@@ -24,10 +24,11 @@ public class CustomerDBDAO implements CustomersDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.execute();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            connectionPool.restoreConnection(connection);
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
+        connectionPool.restoreConnection(connection);
+
     }
 
     @Override
@@ -50,11 +51,10 @@ public class CustomerDBDAO implements CustomersDAO {
                         connectionPool.getCouponsDAO().getAllCustomerCoupons(id)));
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace(); // sql query exception
         } finally {
             connectionPool.restoreConnection(connection);
         }
-
         return customers;
     }
 
@@ -63,24 +63,24 @@ public class CustomerDBDAO implements CustomersDAO {
         Connection connection = connectionPool.getConnection();
         Statement statement;
         String sql = "select * FROM customers WHERE id=" + customerID;
+        Customer customer = null;
         try {
             statement = connection.createStatement();
             ResultSet results = statement.executeQuery(sql);
-            while (results.next()) // Iteration over each row / record
-            {
-                String firstName = results.getString("first_name");
-                String lastName = results.getString("last_name");
-                String email = results.getString("email");
-                String password = results.getString("password");
-                return new Customer(customerID, firstName, lastName, email, password,
-                        connectionPool.getCouponsDAO().getAllCustomerCoupons(customerID));
-            }
+            results.next();
+            String firstName = results.getString("first_name");
+            String lastName = results.getString("last_name");
+            String email = results.getString("email");
+            String password = results.getString("password");
+            customer = new Customer(customerID, firstName, lastName, email, password,
+                    connectionPool.getCouponsDAO().getAllCustomerCoupons(customerID));
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         } finally {
             connectionPool.restoreConnection(connection);
         }
-        return null;
+        return customer;
     }
 
     @Override
@@ -88,24 +88,25 @@ public class CustomerDBDAO implements CustomersDAO {
         Connection connection = connectionPool.getConnection();
         Statement statement;
         String sql = "select * FROM customers WHERE email='" + email + "'";
+        Customer customer = null;
         try {
             statement = connection.createStatement();
             ResultSet results = statement.executeQuery(sql);
-            while (results.next()) // Iteration over each row / record
-            {
-                int id = results.getInt("id");
-                String firstName = results.getString("first_name");
-                String lastName = results.getString("last_name");
-                String password = results.getString("password");
-                return new Customer(id, firstName, lastName, email, password,
-                        connectionPool.getCouponsDAO().getAllCustomerCoupons(id));
-            }
+
+            results.next();
+            int id = results.getInt("id");
+            String firstName = results.getString("first_name");
+            String lastName = results.getString("last_name");
+            String password = results.getString("password");
+            customer = new Customer(id, firstName, lastName, email, password,
+                    connectionPool.getCouponsDAO().getAllCustomerCoupons(id));
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         } finally {
             connectionPool.restoreConnection(connection);
         }
-        return null;
+        return customer;
     }
 
     @Override
@@ -116,32 +117,40 @@ public class CustomerDBDAO implements CustomersDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.execute();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            connectionPool.restoreConnection(connection);
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
+        connectionPool.restoreConnection(connection);
 
     }
 
     @Override
-    public boolean isCustomerExist(String email, String password) throws SQLException {
+    public boolean isCustomerExist(String email, String password) {
         Connection connection = connectionPool.getConnection();
         String sql = "SELECT * FROM customers WHERE (email='" + email + "' AND password = '" + password + "');";
         Statement statement;
         ResultSet results = null;
-        statement = connection.createStatement();
-        results = statement.executeQuery(sql);
-        connectionPool.restoreConnection(connection);
-        return results.next();
+        boolean isExist = false;
+        try {
+            statement = connection.createStatement();
+            results = statement.executeQuery(sql);
+            isExist = results.next();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            connectionPool.restoreConnection(connection);
+        }
+        return isExist;
     }
 
     @Override
-    public boolean isCustomerEmailExist(String email) throws SQLException {
+    public boolean isCustomerEmailExist(String email) {
         return genericIsCustomerExist("email", "'" + email + "'");
     }
 
     @Override
-    public boolean isCustomerExist(int customerID) throws SQLException {
+    public boolean isCustomerExist(int customerID) {
         return genericIsCustomerExist("id", customerID);
     }
 
@@ -161,21 +170,29 @@ public class CustomerDBDAO implements CustomersDAO {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            System.out.println(e.getMessage());
-        } finally {
-            connectionPool.restoreConnection(connection);
+            e.printStackTrace();
         }
+        connectionPool.restoreConnection(connection);
+
     }
 
-    private <T> boolean genericIsCustomerExist(String column, T object) throws SQLException {
+    private <T> boolean genericIsCustomerExist(String column, T object) {
         Connection connection = connectionPool.getConnection();
         String sql = "select * FROM customers WHERE " + column + "=" + object;
         Statement statement;
         ResultSet results = null;
-        statement = connection.createStatement();
-        results = statement.executeQuery(sql);
-        connectionPool.restoreConnection(connection);
-        return results.next();
+        boolean isExist = false;
+        try {
+            statement = connection.createStatement();
+            results = statement.executeQuery(sql);
+            isExist = results.next();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            connectionPool.restoreConnection(connection);
+        }
+        return isExist;
     }
 
 }

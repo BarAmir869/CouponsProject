@@ -1,6 +1,5 @@
 package DAO;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import beans.Company;
@@ -8,11 +7,11 @@ import beans.Company;
 public interface CompaniesDAO {
     public boolean isCompanyExist(String email, String password);
 
-    public boolean isCompanyExist(int companyID) throws SQLException;
+    public boolean isCompanyExist(int companyID);
 
-    public boolean isCompanyNameExist(String name) throws SQLException;
+    public boolean isCompanyNameExist(String name);
 
-    public boolean isCompanyEmailExist(String email) throws SQLException;
+    public boolean isCompanyEmailExist(String email);
 
     public void addCompany(Company company);
 

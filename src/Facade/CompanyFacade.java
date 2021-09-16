@@ -1,8 +1,6 @@
 package Facade;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-
 import beans.Category;
 import beans.Company;
 import beans.Coupon;
@@ -24,16 +22,22 @@ public class CompanyFacade extends ClientFacade {
         return false;
     }
 
-    public void addCoupon(Coupon coupon) throws SQLException {
+    public void addCoupon(Coupon coupon) {
         if (couponsDAO.isTitleExist(companyID, coupon.getTitle())) {
             // TODO throw new exception here
-            System.out.println("Title \"" + coupon.getTitle() + "\" already exist for Company id = " + companyID);
+            // System.out.println("Title \"" + coupon.getTitle() + "\" already exist for
+            // Company id = " + companyID);
+            return;
+        }
+        if (couponsDAO.isCouponExist(coupon.getId())) {
+            // TODO throw
+            // System.out.println("Coupon id=" + coupon.getId() + " already exist");
             return;
         }
         couponsDAO.addCoupon(coupon);
     }
 
-    public void updateCoupon(Coupon coupon) throws SQLException {
+    public void updateCoupon(Coupon coupon) {
         for (Coupon coupon2 : couponsDAO.getAllCompanyCoupons(companyID)) {
             if (!couponsDAO.isCouponExist(coupon2.getId())) {
                 // TODO throw new exception here
@@ -47,7 +51,7 @@ public class CompanyFacade extends ClientFacade {
         couponsDAO.updateCoupon(coupon);
     }
 
-    public void deleteCoupon(int couponID) throws SQLException {
+    public void deleteCoupon(int couponID) {
         if (!couponsDAO.isCouponExist(couponID, companyID)) {
             // TODO throw new exception here
             System.out.println("Coupon id = " + couponID + " doesn't exist");

@@ -1,50 +1,84 @@
 package Jobs;
 
-import java.sql.Date;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import DAO.CouponsDAO;
 import DAO.CouponsDBDAO;
 import Exeptions.NoSuchCategoryIdException;
+import Test.Test;
 import beans.Coupon;
-import database.ConnectionPool;
 
 public class CouponExpirationDailyJob implements Runnable {
+    private static Object lock = new Object();
     private boolean quit = false;
-    private ConnectionPool connectionPool;
+    private static boolean testProcess = false;
     private CouponsDAO couponsDAO;
     private static final int timeToSleep = 1000 * 3; // millis*seconds*minutes*hours*days
+    private static Test menu = new Test();
 
     public CouponExpirationDailyJob() {
-        connectionPool = ConnectionPool.getInstance();
-        // connectionPool.connectDB();
         couponsDAO = new CouponsDBDAO();
+    }
+
+    public boolean isTestProcess() {
+        return testProcess;
+    }
+
+    public void setTestProcess(boolean testProcess) {
+        CouponExpirationDailyJob.testProcess = testProcess;
+    }
+
+    public static Object getLock() {
+        return lock;
     }
 
     @Override
     public void run() {
         System.out.println("Daily-" + Thread.currentThread().getName() + " Start his Work!");
         while (!quit) {
+            synchronized (lock) {
+                if (testProcess) {
+                    try {
+                        lock.wait();
+                        System.out.println("waking up...");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
             ArrayList<Coupon> coupons = new ArrayList<>();
             try {
                 coupons = couponsDAO.getAllCoupons();
-            } catch (SQLException | NoSuchCategoryIdException e1) {
+            } catch (NoSuchCategoryIdException e1) {
             }
             if (coupons != null) {
+
+                boolean expired = false;
                 Timestamp now = new Timestamp(System.currentTimeMillis());
                 for (Coupon coupon : coupons) {
                     if (coupon.getEndDate().before(now)) {
-                        try {
-                            couponsDAO.deleteCoupon(coupon.getId());
-                            couponsDAO.deleteCouponPurchases(coupon.getId());
-                            System.out.println("\nCoupon " + coupon.getId() + " expired! Deleted by Daily-"
-                                    + Thread.currentThread().getName());
-                        } catch (SQLException e) {
-                            // quit = true;
+                        couponsDAO.deleteCoupon(coupon.getId());
+                        couponsDAO.deleteCouponPurchases(coupon.getId());
+                        if (!expired) {
+                            System.out.println();
+                            System.out
+                                    .println("***********************************************************************");
+                            System.out
+                                    .println("*****             <<<<<Time to clean some trash>>>>>>             *****");
+                            System.out
+                                    .println("***********************************************************************");
+
                         }
+                        System.out.println("*****\t\tCoupon " + coupon.getId() + " expired! Deleted by Daily-"
+                                + Thread.currentThread().getName() + "\t  *****");
+                        expired = true;
                     }
+                }
+                if (expired) {
+                    System.out.println("***********************************************************************");
+                    System.out.println(Test.getStaticMenu());
+
                 }
             }
             try {

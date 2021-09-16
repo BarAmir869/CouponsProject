@@ -2,8 +2,6 @@ package Facade;
 
 import java.sql.SQLException;
 
-import database.ConnectionPool;
-
 public class LoginManager {
     public enum ClientType {
         ADMINISTRATOR(), COMPANY(), CUSTOMER();
@@ -35,7 +33,7 @@ public class LoginManager {
         ClientFacade clientFacade;
         switch (clientType) {
             case ADMINISTRATOR:
-                System.out.println("Administrator logged-in");
+
                 clientFacade = new AdminFacade();
                 break;
             case COMPANY:

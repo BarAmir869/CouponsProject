@@ -1,7 +1,8 @@
 package Facade;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
+
+import Exeptions.FacadeException;
 import beans.Company;
 import beans.Coupon;
 import beans.Customer;
@@ -24,47 +25,42 @@ public class AdminFacade extends ClientFacade {
         return false;
     }
 
-    public void addCompany(Company company) throws SQLException {
-        if (companiesDAO.isCompanyExist(company.getId()) || companiesDAO.isCompanyEmailExist(company.getEmail())
-                || companiesDAO.isCompanyNameExist(company.getName())) {
-            // TODO throw new Exception here
-            System.out.println("company id = " + company.getId() + " already exist");
-            return;
+    public void addCompany(Company company) throws FacadeException {
+        if (companiesDAO.isCompanyExist(company.getId()))
+            throw new FacadeException("Company id = " + company.getId() + " already exist");
+        if (companiesDAO.isCompanyEmailExist(company.getEmail()))
+            throw new FacadeException("Email = " + company.getEmail() + " is in use with another user, try another");
+        if (companiesDAO.isCompanyNameExist(company.getName())) {
+            throw new FacadeException("Name = " + company.getName() + " is in use with another user, try another");
+
         }
         companiesDAO.addCompany(company);
         for (Coupon coupon : company.getCoupons())
-            couponsDAO.addCoupon(coupon);
-        System.out.println("company id = " + company.getId() + " inserted ok");
+            companyFacade.addCoupon(coupon);
     }
 
-    public void updateCompany(Company company) throws SQLException {
+    public void updateCompany(Company company) throws FacadeException {
         if (!companiesDAO.isCompanyExist(company.getId())) {
-            // TODO throw new exception here
-            System.out.println("Company id = " + company.getId() + " doesn't exist");
-            return;
+            throw new FacadeException("Company id = " + company.getId() + " doesn't exist");
         }
         Company oldCompany = companiesDAO.getCompany(company.getId());
         if (!oldCompany.getName().equals(company.getName())) {
-            // TODO throw new exception here
-            System.out.println("Company id = " + company.getId() + " can't change name");
-            return;
+            throw new FacadeException("Company id = " + company.getId() + " can't change name");
+
         }
         companiesDAO.updateCompany(company);
-        System.out.println("company id = " + company.getId() + " updated");
     }
 
-    public void deleteCompany(int companyID) throws SQLException {
+    public void deleteCompany(int companyID) throws FacadeException {
         if (!companiesDAO.isCompanyExist(companyID)) {
-            // TODO throw new exception here
-            System.out.println("Company id = " + companyID + " doesn't exist");
-            return;
+            throw new FacadeException("Company id = " + companyID + " doesn't exist");
+
         }
         companiesDAO.deleteCompany(companyID);
         ArrayList<Coupon> coupons = couponsDAO.getAllCompanyCoupons(companyID);
         couponsDAO.deleteCompanyCoupons(companyID);// delete all company coupons
         for (Coupon coupon : coupons)
             couponsDAO.deleteCouponPurchases(coupon.getId());
-        System.out.println("company id = " + companyID + " deleted");
     }
 
     public ArrayList<Company> getAllCompanies() {
@@ -76,28 +72,36 @@ public class AdminFacade extends ClientFacade {
     }
 
     public Company getOneCompany(int companyID) {
+        if (!companiesDAO.isCompanyExist(companyID)) {
+            // TODO exception
+            return null;
+        }
         Company company = companiesDAO.getCompany(companyID);
         company.setCoupons(couponsDAO.getAllCompanyCoupons(companyID));
         return company;
     }
 
-    public void addCustomer(Customer customer) throws SQLException {
-        if (customersDAO.isCustomerExist(customer.getId()) || customersDAO.isCustomerEmailExist(customer.getEmail())) {
+    public void addCustomer(Customer customer) throws FacadeException {
+        if (customersDAO.isCustomerExist(customer.getId()))
+            throw new FacadeException("Customer already exist(by ID)");
+        if (customersDAO.isCustomerEmailExist(customer.getEmail())) {
             // TODO throw new Exception here
-            System.out.println("Customer id = " + customer.getId() + " 'already exist");
+            System.out.println("Customer id = " + customer.getId() + " already exist");
             return;
         }
         customersDAO.addCustomer(customer);
         ArrayList<Coupon> coupons = couponsDAO.getAllCustomerCoupons(customer.getId());
         for (Coupon coupon : customer.getCoupons()) {
-            if (!coupons.contains(coupon))
+            if (!coupons.contains(coupon))// this is better than couponFacade.purchaseCoupon -> don't waste connections
                 couponsDAO.addCouponPurchase(customer.getId(), coupon.getId());
         }
         System.out.println("Customer id = " + customer.getId() + " inserted ok.");
     }
 
-    public void updateCustomer(Customer customer) throws SQLException {
-
+    public void updateCustomer(Customer customer) {
+        if (customer == null) {
+            System.out.println("argument was null->bug");
+        }
         if (!customersDAO.isCustomerExist(customer.getId())) {
             // TODO throw new exception here
             System.out.println("Customer id = " + customer.getId() + " doesn't exist");
@@ -113,26 +117,14 @@ public class AdminFacade extends ClientFacade {
         }
         for (Coupon coupon : oldCoupons) {
             if (!newCoupons.contains(coupon))
-                try {
-                    couponsDAO.deleteCouponPurchase(customer.getId(), coupon.getId());
-                } catch (SQLException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                couponsDAO.deleteCouponPurchase(customer.getId(), coupon.getId());
+
         }
-        System.out.println("Customer id = " + customer.getId() + " updated.");
     }
 
     public void deleteCustomer(int customerID) {
         customersDAO.deleteCustomer(customerID);
-        try {
-            couponsDAO.deleteAllCustomerCouponsPurchases(customerID);
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        System.out.println("customer id = " + customerID + " deleted");
+        couponsDAO.deleteAllCustomerCouponsPurchases(customerID);
     }
 
     public ArrayList<Customer> getAllCustomers() {
@@ -144,6 +136,10 @@ public class AdminFacade extends ClientFacade {
     }
 
     public Customer getOneCustomer(int customerID) {
+        if (!customersDAO.isCustomerExist(customerID)) {
+            // TODO exception
+            return null;
+        }
         Customer customer = customersDAO.getOneCustomer(customerID);
         customer.setCoupons(couponsDAO.getAllCustomerCoupons(customerID));
         return customer;

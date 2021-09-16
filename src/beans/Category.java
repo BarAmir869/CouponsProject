@@ -49,10 +49,15 @@ public enum Category {
 		private static int nextValue = 1;
 	}
 
-	public static Category getRandom() throws NoSuchCategoryIdException {
+	public static Category getRandom() {
 		Set<Category> categoriesSet = getAllCategories();
 		Random rnd = new Random();
 		int id = rnd.nextInt(categoriesSet.size() - 1) + 1;
-		return getCategoryByID(id);
+		try {
+			return getCategoryByID(id);
+		} catch (NoSuchCategoryIdException e) {
+			e.getMessage();
+		}
+		return null;
 	}
 }

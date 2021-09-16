@@ -2,8 +2,6 @@ package beans;
 
 import java.util.ArrayList;
 
-import Exeptions.CouponAlreadyExistException;
-
 public class Company {
 
 	private int id;
@@ -61,9 +59,7 @@ public class Company {
 		this.coupons = coupons;
 	}
 
-	public void addCoupon(Coupon coupon) throws CouponAlreadyExistException {
-		if (coupons.contains(coupon))
-			throw new CouponAlreadyExistException(/* msg */);
+	public void addCoupon(Coupon coupon) {
 		coupons.add(coupon);
 		System.out.println("Coupon id= " + coupon.getId() + " was added successfully");
 	}

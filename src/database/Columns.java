@@ -1,14 +1,14 @@
 package database;
 
 public enum Columns {
-    ID("id", "int", true), NAME("name", "varchar(15)", true), EMAIL("email", "varchar(20)", true),
-    PASSWORD("password", "varchar(20)", true), FIRST_NAME("first_name", "varchar(10)", true),
-    LAST_NAME("last_name", "varchar(10)", true), COUPON_ID("coupon_id", "int", true),
+    ID("id", "int", true), NAME("name", "varchar(45)", true), EMAIL("email", "varchar(45)", true),
+    PASSWORD("password", "varchar(45)", true), FIRST_NAME("first_name", "varchar(45)", true),
+    LAST_NAME("last_name", "varchar(45)", true), COUPON_ID("coupon_id", "int", true),
     CATEGORY_ID("category_id", "int", true), COMPANY_ID("company_id", "int", true),
-    CUSTOMER_ID("customer_id", "int", true), TITLE("title", "varchar(20)", true),
+    CUSTOMER_ID("customer_id", "int", true), TITLE("title", "varchar(45)", true),
     DESCRIPTION("description", "varchar(45)", false), START_DATE("start_date", "Timestamp", true),
     END_DATE("end_date", "Timestamp", true), AMOUNT("amount", "int", true), PRICE("price", "double", true),
-    IMAGE("image", "varchar(20)", true);
+    IMAGE("image", "varchar(45)", true);
 
     private String column;
     private String type;

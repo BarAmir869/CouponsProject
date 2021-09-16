@@ -78,7 +78,7 @@ public class CustomerFacade extends ClientFacade {
         return filteredCoupons;
     }
 
-    public Customer getCustomerDetails() {
+    public Customer getCustomerDetails() throws SQLException {
         return customersDAO.getOneCustomer(customerID);
     }
 }

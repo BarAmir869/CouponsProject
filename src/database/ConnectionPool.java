@@ -33,7 +33,6 @@ public class ConnectionPool {
     private int numOfConnectionsAvailable;
     // synchronized locks
     private static Object getConnectionLock = new Object();
-    private static Object restoreConnectionLock = new Object();
     private static Object constructorLock = new Object();
     private static Object setLock = new Object();
     // Dao interfaces

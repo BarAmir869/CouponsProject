@@ -1,24 +1,44 @@
 package database;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.stream.Collectors;
 
 import beans.Category;
 
 public class TablesConstructing {
 
-	private static boolean ConnectMessage = true;
 	private static ConnectionPool connectionPool = ConnectionPool.getInstance();
-	private static String dbName = "coupon_project";
-	private static String userName = "root";
-	private static String password = "1234";
-	private static String connectionString = "jdbc:mysql://localhost/" + dbName + "?user=" + userName + "&password="
-			+ password;
+
+	public static void dropAllTables() {
+		try {
+			dropTable(Tables.COMPANIES);
+			dropTable(Tables.CATEGORIES);
+			dropTable(Tables.COUPONS);
+			dropTable(Tables.CUSTOMERS);
+			dropTable(Tables.CUSTOMERS_VS_COUPONS);
+			addAllCategories(Tables.CATEGORIES);
+		} catch (SQLException e) {
+			System.out.println("Query is wrong, ");
+			e.printStackTrace();
+		}
+		System.err.println("***************\t\tTables Constructing done\t***************");
+	}
+
+	private static void dropTable(Tables table) throws SQLException {
+		Connection connection = connectionPool.getConnection();
+		String sql = "DROP TABLE `coupon_project`.`" + table.getName() + "`;";
+		PreparedStatement preparedStatement;
+		try {
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.execute();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			connectionPool.restoreConnection(connection);
+		}
+	}
 
 	public static void construct() {
 		try {
@@ -55,6 +75,7 @@ public class TablesConstructing {
 		try {
 			preparedStatement.execute();
 		} catch (SQLException e) {
+			throw e;
 		} finally {
 			connectionPool.restoreConnection(connection);
 		}

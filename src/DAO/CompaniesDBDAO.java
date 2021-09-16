@@ -177,29 +177,38 @@ public class CompaniesDBDAO implements CompaniesDAO {
     }
 
     @Override
-    public boolean isCompanyExist(int companyID) throws SQLException {
+    public boolean isCompanyExist(int companyID) {
         return genericIsCompanyExist("id", companyID);
     }
 
     @Override
-    public boolean isCompanyNameExist(String name) throws SQLException {
+    public boolean isCompanyNameExist(String name) {
         return genericIsCompanyExist("name", "'" + name + "'");
     }
 
     @Override
-    public boolean isCompanyEmailExist(String email) throws SQLException {
+    public boolean isCompanyEmailExist(String email) {
         return genericIsCompanyExist("email", "'" + email + "'");
     }
 
-    private <T> boolean genericIsCompanyExist(String column, T object) throws SQLException {
+    private <T> boolean genericIsCompanyExist(String column, T object) {
         Connection connection = connectionPool.getConnection();
         String sql = "select id, name, email, password FROM companies WHERE " + column + "=" + object;
         Statement statement;
         ResultSet results = null;
-        statement = connection.createStatement();
-        results = statement.executeQuery(sql);
-        connectionPool.restoreConnection(connection);
-        return results.next();
+        boolean isExist = false;
+        try {
+            statement = connection.createStatement();
+            results = statement.executeQuery(sql);
+
+            isExist = results.next();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            connectionPool.restoreConnection(connection);
+        }
+        return isExist;
 
     }
 }

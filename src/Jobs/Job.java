@@ -2,10 +2,10 @@ package Jobs;
 
 public class Job {
     Thread jobThread;
-    CouponExpirationDailyJob jobRunnable;
+    private static CouponExpirationDailyJob jobRunnable = new CouponExpirationDailyJob();
+    private static Object lock = CouponExpirationDailyJob.getLock();
 
     public Job(String name) {
-        jobRunnable = new CouponExpirationDailyJob();
         jobThread = new Thread(jobRunnable, "job" + name);
         jobThread.setDaemon(true);
     }
@@ -13,6 +13,19 @@ public class Job {
     public void startJob() {
         if (!jobThread.isAlive())
             jobThread.start();
+    }
+
+    public void startProcess() {
+        synchronized (lock) {
+            jobRunnable.setTestProcess(true);
+        }
+    }
+
+    public void endProcess() {
+        synchronized (lock) {
+            lock.notifyAll();
+            jobRunnable.setTestProcess(false);
+        }
     }
 
     public void stopJob() {
