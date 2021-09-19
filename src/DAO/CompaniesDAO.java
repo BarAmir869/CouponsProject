@@ -23,8 +23,5 @@ public interface CompaniesDAO {
 
     public Company getCompany(int companyID);
 
-    public Company getCompanyByMail(String string);
-
-    //אני משתלטת לך על הפרויקט
-    
+    public Company getCompanyByMail(String string);    
 }
