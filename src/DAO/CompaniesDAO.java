@@ -25,4 +25,6 @@ public interface CompaniesDAO {
 
     public Company getCompanyByMail(String string);
 
+    //אני משתלטת לך על הפרויקט
+    
 }
