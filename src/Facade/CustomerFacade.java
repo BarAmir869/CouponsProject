@@ -1,9 +1,9 @@
 package Facade;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
+import Exeptions.FacadeException;
 import beans.Category;
 import beans.Coupon;
 import beans.Customer;
@@ -16,29 +16,26 @@ public class CustomerFacade extends ClientFacade {
     }
 
     @Override
-    public boolean login(String email, String password) throws SQLException {
+    public boolean login(String email, String password) {
         if (customersDAO.isCustomerExist(email, password)) {
-            customerID = customersDAO.getCustomerByMail("email").getId();
+            customerID = customersDAO.getCustomerByMail(email).getId();
             return true;
         }
         return false;
     }
 
-    public void purchaseCoupon(Coupon coupon) throws SQLException {
+    public void purchaseCoupon(Coupon coupon) throws FacadeException {
 
         if (isPurchaseExist(coupon.getId(), customerID)) {
-            // TODO throw
-            System.out.println("Coupon id = " + coupon.getId() + " has already bought by Customer id = " + customerID);
-            return;
+            throw new FacadeException(
+                    "Coupon id = " + coupon.getId() + " has already bought by Customer id = " + customerID);
+
         }
         if (coupon.getAmount() == 0) {
-            // TODO throw
-            System.out.println("Coupon id = " + coupon.getId() + " out of stock");
-            return;
+            throw new FacadeException("Coupon id = " + coupon.getId() + " out of stock");
         }
         if (coupon.getEndDate().before(new Date(System.currentTimeMillis()))) {
-            // TODO throw expired
-            System.out.println("Coupon id = " + coupon.getId() + " expired");
+            throw new FacadeException("Coupon id = " + coupon.getId() + " expired");
         }
         couponsDAO.addCouponPurchase(customerID, coupon.getId());
         coupon.setAmount(coupon.getAmount() - 1);
@@ -78,7 +75,10 @@ public class CustomerFacade extends ClientFacade {
         return filteredCoupons;
     }
 
-    public Customer getCustomerDetails() throws SQLException {
+    public Customer getCustomerDetails() throws FacadeException {
+        if (!customersDAO.isCustomerExist(customerID))
+            throw new FacadeException("Customer doesn't exist");
         return customersDAO.getOneCustomer(customerID);
+
     }
 }

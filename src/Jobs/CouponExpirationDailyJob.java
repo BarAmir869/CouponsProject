@@ -15,7 +15,6 @@ public class CouponExpirationDailyJob implements Runnable {
     private static boolean testProcess = false;
     private CouponsDAO couponsDAO;
     private static final int timeToSleep = 1000 * 3; // millis*seconds*minutes*hours*days
-    private static Test menu = new Test();
 
     public CouponExpirationDailyJob() {
         couponsDAO = new CouponsDBDAO();
@@ -84,7 +83,6 @@ public class CouponExpirationDailyJob implements Runnable {
             try {
                 Thread.sleep(timeToSleep);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

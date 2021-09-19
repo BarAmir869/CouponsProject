@@ -88,23 +88,22 @@ public class CompaniesDBDAO implements CompaniesDAO {
         Connection connection = connectionPool.getConnection();
         Statement statement;
         String sql = "select * FROM companies WHERE id=" + companyID;
+        Company company = null;
         try {
             statement = connection.createStatement();
             ResultSet results = statement.executeQuery(sql);
-            while (results.next()) // Iteration over each row / record
-            {
-                String name = results.getString("name");
-                String email = results.getString("email");
-                String password = results.getString("password");
-                return new Company(companyID, name, email, password,
-                        connectionPool.getCouponsDAO().getAllCompanyCoupons(companyID));
-            }
+            results.next();
+            String name = results.getString("name");
+            String email = results.getString("email");
+            String password = results.getString("password");
+            company = new Company(companyID, name, email, password,
+                    connectionPool.getCouponsDAO().getAllCompanyCoupons(companyID));
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            // System.out.println(e.getMessage());
         } finally {
             connectionPool.restoreConnection(connection);
         }
-        return null;
+        return company;
     }
 
     @Override
@@ -112,22 +111,22 @@ public class CompaniesDBDAO implements CompaniesDAO {
         Connection connection = connectionPool.getConnection();
         Statement statement;
         String sql = "select * FROM companies WHERE email='" + email + "'";
+        Company company = null;
         try {
             statement = connection.createStatement();
             ResultSet results = statement.executeQuery(sql);
-            while (results.next()) // Iteration over each row / record
-            {
-                int id = results.getInt("id");
-                String name = results.getString("name");
-                String password = results.getString("password");
-                return new Company(id, name, email, password, connectionPool.getCouponsDAO().getAllCompanyCoupons(id));
-            }
+            results.next();
+            int id = results.getInt("id");
+            String name = results.getString("name");
+            String password = results.getString("password");
+            company = new Company(id, name, email, password, connectionPool.getCouponsDAO().getAllCompanyCoupons(id));
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            System.out.println("companies dao bug");
         } finally {
             connectionPool.restoreConnection(connection);
         }
-        return null;
+        return company;
     }
 
     @Override
@@ -145,7 +144,6 @@ public class CompaniesDBDAO implements CompaniesDAO {
                 isExist = true;
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             System.out.println(e.getMessage());
         } finally {
             connectionPool.restoreConnection(connection);
@@ -164,12 +162,10 @@ public class CompaniesDBDAO implements CompaniesDAO {
         String sql = "UPDATE companies SET name = '" + name + "', email='" + email + "', password='" + password
                 + "' WHERE id=" + id;
         PreparedStatement preparedStatement;
-        // TODO what to do with company.coupons??
         try {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             System.out.println(e.getMessage());
         } finally {
             connectionPool.restoreConnection(connection);
@@ -200,11 +196,9 @@ public class CompaniesDBDAO implements CompaniesDAO {
         try {
             statement = connection.createStatement();
             results = statement.executeQuery(sql);
-
             isExist = results.next();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         } finally {
             connectionPool.restoreConnection(connection);
         }

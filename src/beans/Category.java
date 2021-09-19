@@ -38,9 +38,8 @@ public enum Category {
 
 	public static Category getCategoryByID(int id) throws NoSuchCategoryIdException {
 		Optional<Category> optional = Arrays.stream(values()).filter(Category -> Category.id == id).findFirst();
-		if (optional.get() == null) {
-			System.out.println("No category with id = " + id);// need to throw customize exception
-			throw new NoSuchCategoryIdException();
+		if (optional.isEmpty()) {
+			throw new NoSuchCategoryIdException("There is no Category id: " + id);
 		}
 		return optional.get();
 	}

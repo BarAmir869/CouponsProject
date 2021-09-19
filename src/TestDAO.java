@@ -1,5 +1,4 @@
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -24,59 +23,66 @@ public class TestDAO {
     public static CouponsDAO couponsDAO;
     public static CustomersDAO customerDAO;
 
-    public static void main(String[] args) throws SQLException, InterruptedException {
-        System.out.println("Test Started");
-        companiesDAO = connectionPool.getCompaniesDAO();
-        couponsDAO = connectionPool.getCouponsDAO();
-        customerDAO = connectionPool.getCustomersDAO();
+    // public static void main(String[] args) throws SQLException,
+    // InterruptedException {
+    // System.out.println("Test Started");
+    // companiesDAO = connectionPool.getCompaniesDAO();
+    // couponsDAO = connectionPool.getCouponsDAO();
+    // customerDAO = connectionPool.getCustomersDAO();
 
-        // Customer bar = customerDAO.getOneCustomer(2);
-        // System.out.println(bar);
-        // for (int i = 1; i < 100; i++) {
-        // addCompanyThread(new Company(i, "company" + i, "email@gmail.com", "1234", new
-        // ArrayList<Coupon>()));
-        // }
-        // // closeAllConnectionsAvailableThread();
-        // Date startDate = new Date(System.currentTimeMillis());
-        // Date endDate = new Date((long) (startDate.getTime() + (3.1556926 *
-        // Math.pow(10, 10))));
-        // for (int i = 1; i <= 20; i++) {
+    // // Customer bar = customerDAO.getOneCustomer(2);
+    // // System.out.println(bar);
+    // // for (int i = 1; i < 100; i++) {
+    // // addCompanyThread(new Company(i, "company" + i, "email@gmail.com", "1234",
+    // new
+    // // ArrayList<Coupon>()));
+    // // }
+    // // // closeAllConnectionsAvailableThread();
+    // // Date startDate = new Date(System.currentTimeMillis());
+    // // Date endDate = new Date((long) (startDate.getTime() + (3.1556926 *
+    // // Math.pow(10, 10))));
+    // // for (int i = 1; i <= 20; i++) {
 
-        // couponsDAO.addCoupon(new Coupon(i, i, Category.FOOD, "hamburger", "coupon for
-        // 220g hamburger", startDate,
-        // endDate, 5, 10.90, "myImage"));
+    // // couponsDAO.addCoupon(new Coupon(i, i, Category.FOOD, "hamburger", "coupon
+    // for
+    // // 220g hamburger", startDate,
+    // // endDate, 5, 10.90, "myImage"));
 
-        // }
+    // // }
 
-        // companiesDAO.deleteCompany(5);
-        // System.out.println(companiesDAO.getAllCompanies());
-        // System.out.println("***********\n" + companiesDAO.getCompany(14));
-        // System.out.println(companiesDAO.isCompanyExist("email@gmail.com", "1234"));
-        // companiesDAO.updateCompany(new Company(22, "myNewCompany",
-        // "newEmail@gmail.com", "234222", new ArrayList<>()));
-        // System.out.println("***********\n" + companiesDAO.getCompany(22));
+    // // companiesDAO.deleteCompany(5);
+    // // System.out.println(companiesDAO.getAllCompanies());
+    // // System.out.println("***********\n" + companiesDAO.getCompany(14));
+    // // System.out.println(companiesDAO.isCompanyExist("email@gmail.com",
+    // "1234"));
+    // // companiesDAO.updateCompany(new Company(22, "myNewCompany",
+    // // "newEmail@gmail.com", "234222", new ArrayList<>()));
+    // // System.out.println("***********\n" + companiesDAO.getCompany(22));
 
-        // for (int i = 1; i <= 10; i++) {
-        // couponsDAO.addCouponPurchase(i, i);
-        // }
-        // couponsDAO.deleteCouponPurchase(100, 100);
-        // couponsDAO.addCouponPurchase(20, 20);
-        // System.out.println(couponsDAO.getAllCoupons());
-        // System.out.println("***********\n" + couponsDAO.getOneCoupon(14));
-        // couponsDAO.updateCoupon(new Coupon(5, 12, Category.ELECTRICITY, "computer",
-        // "apple MacBook",
-        // new java.sql.Date(50000), new java.sql.Date(5000000), 1000, 500, "apple
-        // image"));
-        // System.out.println(couponsDAO.getAllCompanyCoupons(12));
-        // System.out.println(couponsDAO.isCouponExist(12));
-        // Customer customer = new Customer(2, "Bar", "Amir", "bar@gmail.com", "1234",
-        // new ArrayList<Coupon>(Arrays.asList(new Coupon(10000, 10, Category.VACATION,
-        // "fiji vacation", "weekend",
-        // startDate, endDate, 1, 10, "Beach image"))));
-        // customerDAO.addCustomer(customer);
+    // // for (int i = 1; i <= 10; i++) {
+    // // couponsDAO.addCouponPurchase(i, i);
+    // // }
+    // // couponsDAO.deleteCouponPurchase(100, 100);
+    // // couponsDAO.addCouponPurchase(20, 20);
+    // // System.out.println(couponsDAO.getAllCoupons());
+    // // System.out.println("***********\n" + couponsDAO.getOneCoupon(14));
+    // // couponsDAO.updateCoupon(new Coupon(5, 12, Category.ELECTRICITY,
+    // "computer",
+    // // "apple MacBook",
+    // // new java.sql.Date(50000), new java.sql.Date(5000000), 1000, 500, "apple
+    // // image"));
+    // // System.out.println(couponsDAO.getAllCompanyCoupons(12));
+    // // System.out.println(couponsDAO.isCouponExist(12));
+    // // Customer customer = new Customer(2, "Bar", "Amir", "bar@gmail.com",
+    // "1234",
+    // // new ArrayList<Coupon>(Arrays.asList(new Coupon(10000, 10,
+    // Category.VACATION,
+    // // "fiji vacation", "weekend",
+    // // startDate, endDate, 1, 10, "Beach image"))));
+    // // customerDAO.addCustomer(customer);
 
-        // joinAllThreads();System.out.println("Test Ended");
-    }
+    // // joinAllThreads();System.out.println("Test Ended");
+    // }
 
     LoginManager loginManager = LoginManager.getInstance();
     AdminFacade adminFacade;
@@ -115,7 +121,6 @@ public class TestDAO {
             System.out.println("waiting for job 1 to stop...");
             joinThread("job 1");
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
@@ -128,43 +133,43 @@ public class TestDAO {
     private void joinThread(String string) {
     }
 
-    private static void joinAllThreads() throws InterruptedException {
-        // for (Thread t : Thread.getAllStackTraces().keySet()) {
-        // if (t.getName().contains("company")) {
-        // t.join();
-        // }
-        // }
-        Thread.getAllStackTraces().keySet().stream().filter(t -> t.getName().contains("company")).forEach(t -> {
-            try {
-                t.join();
-            } catch (InterruptedException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-        });
-        Thread.getAllStackTraces().keySet().stream().filter(t -> t.getName().equals("closingThread")).forEach(t -> {
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        });
-    }
+    // private static void joinAllThreads() throws InterruptedException {
+    // // for (Thread t : Thread.getAllStackTraces().keySet()) {
+    // // if (t.getName().contains("company")) {
+    // // t.join();
+    // // }
+    // // }
+    // Thread.getAllStackTraces().keySet().stream().filter(t ->
+    // t.getName().contains("company")).forEach(t -> {
+    // try {
+    // t.join();
+    // } catch (InterruptedException e1) {
+    // e1.printStackTrace();
+    // }
+    // });
+    // Thread.getAllStackTraces().keySet().stream().filter(t ->
+    // t.getName().equals("closingThread")).forEach(t -> {
+    // try {
+    // t.join();
+    // } catch (InterruptedException e) {
+    // e.printStackTrace();
+    // }
+    // });
+    // }
 
-    private static void closeAllConnectionsAvailableThread() {
-        Thread thread = new Thread(() -> {
-            connectionPool.closeAllConnectionsAvailable();
-        }, "closingThread");
-        thread.start();
-    }
+    // private static void closeAllConnectionsAvailableThread() {
+    // Thread thread = new Thread(() -> {
+    // connectionPool.closeAllConnectionsAvailable();
+    // }, "closingThread");
+    // thread.start();
+    // }
 
-    private static void addCompanyThread(Company company) {
-        Thread t1 = new Thread(() -> {
+    // private static void addCompanyThread(Company company) {
+    // Thread t1 = new Thread(() -> {
 
-            companiesDAO.addCompany(company);
+    // companiesDAO.addCompany(company);
 
-        }, company.getName());
-        t1.start();
-    }
+    // }, company.getName());
+    // t1.start();
+    // }
 }

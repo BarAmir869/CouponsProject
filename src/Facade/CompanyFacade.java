@@ -1,6 +1,8 @@
 package Facade;
 
 import java.util.ArrayList;
+
+import Exeptions.FacadeException;
 import beans.Category;
 import beans.Company;
 import beans.Coupon;
@@ -13,52 +15,62 @@ public class CompanyFacade extends ClientFacade {
         super();
     }
 
+    public int getCompanyID() {
+        return companyID;
+    }
+
     @Override
     public boolean login(String email, String password) {
         if (companiesDAO.isCompanyExist(email, password)) {
-            companyID = companiesDAO.getCompanyByMail("email").getId();
+            companyID = companiesDAO.getCompanyByMail(email).getId();
             return true;
         }
         return false;
     }
 
-    public void addCoupon(Coupon coupon) {
+    public void addCoupon(Coupon coupon) throws FacadeException {
         if (couponsDAO.isTitleExist(companyID, coupon.getTitle())) {
-            // TODO throw new exception here
-            // System.out.println("Title \"" + coupon.getTitle() + "\" already exist for
-            // Company id = " + companyID);
-            return;
+            throw new FacadeException(
+                    "Title \"" + coupon.getTitle() + "\" already exist for Company id = " + companyID);
         }
         if (couponsDAO.isCouponExist(coupon.getId())) {
-            // TODO throw
-            // System.out.println("Coupon id=" + coupon.getId() + " already exist");
-            return;
+            throw new FacadeException("Coupon id=" + coupon.getId() + " already exist");
         }
         couponsDAO.addCoupon(coupon);
     }
 
-    public void updateCoupon(Coupon coupon) {
-        for (Coupon coupon2 : couponsDAO.getAllCompanyCoupons(companyID)) {
-            if (!couponsDAO.isCouponExist(coupon2.getId())) {
-                // TODO throw new exception here
-                System.out.println("Can't update Company/ Coupon id = " + coupon.getId());
-                return;
-            }
-        }
-        // if (!couponsDAO.isCouponExist(coupon.getId(), companyID)) {
-        // // TODO throw new exception here
-        // } //****test ****/
+    public void updateCoupon(Coupon coupon) throws FacadeException {// TODO Coupon coupon or int id??
+        // for (Coupon coupon2 : couponsDAO.getAllCompanyCoupons(companyID)) {
+        // if (!couponsDAO.isCouponExist(coupon2.getId())) {
+        // throw new FacadeException("Can't update Company/ Coupon id = " +
+        // coupon.getId());
+
+        // }
+        // }
+        if (!couponsDAO.isCouponExist(coupon.getId(), companyID)) {
+            throw new FacadeException("Coupon id = " + coupon.getId() + " doesn't exit for company id = " + companyID);
+        } // ****test ****/
         couponsDAO.updateCoupon(coupon);
     }
 
-    public void deleteCoupon(int couponID) {
+    public void deleteCoupon(int couponID) throws FacadeException {
         if (!couponsDAO.isCouponExist(couponID, companyID)) {
-            // TODO throw new exception here
-            System.out.println("Coupon id = " + couponID + " doesn't exist");
-            return;
+            throw new FacadeException("Coupon id = " + couponID + " doesn't exist");
         }
         couponsDAO.deleteCoupon(couponID);
         couponsDAO.deleteCouponPurchases(couponID);
+    }
+
+    public Coupon getCoupon(int couponID) throws FacadeException {
+
+        if (!couponsDAO.isCouponExist(couponID, companyID)) {
+            throw new FacadeException("Coupon id = " + couponID + " doesn't exit for company id = " + companyID);
+        }
+        return couponsDAO.getOneCoupon(couponID);
+    }
+
+    public ArrayList<Coupon> getCompanyCoupons() {
+        return couponsDAO.getAllCompanyCoupons(companyID);
     }
 
     public ArrayList<Coupon> getCompanyCoupons(Category category) {
@@ -81,7 +93,9 @@ public class CompanyFacade extends ClientFacade {
         return filteredCoupons;
     }
 
-    public Company getCompanyDetails() {
+    public Company getCompanyDetails() throws FacadeException {
+        if (!companiesDAO.isCompanyExist(companyID))
+            throw new FacadeException("Company id = " + companyID + " doesn't exist");
         return companiesDAO.getCompany(companyID);
     }
 }

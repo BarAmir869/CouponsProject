@@ -21,9 +21,8 @@ public class TablesConstructing {
 			addAllCategories(Tables.CATEGORIES);
 		} catch (SQLException e) {
 			System.out.println("Query is wrong, ");
-			e.printStackTrace();
 		}
-		System.err.println("***************\t\tTables Constructing done\t***************");
+		System.err.println("***************\t\tTables dropping done\t\t***************");
 	}
 
 	private static void dropTable(Tables table) throws SQLException {
@@ -40,7 +39,7 @@ public class TablesConstructing {
 		}
 	}
 
-	public static void construct() {
+	public static void construct() throws SQLException {
 		try {
 			createNewTable(Tables.COMPANIES);
 			createNewTable(Tables.CATEGORIES);
@@ -49,8 +48,7 @@ public class TablesConstructing {
 			createNewTable(Tables.CUSTOMERS_VS_COUPONS);
 			addAllCategories(Tables.CATEGORIES);
 		} catch (SQLException e) {
-			System.out.println("Query is wrong, ");
-			e.printStackTrace();
+			throw new SQLException("***************       Tables already constructed        ***************");
 		}
 		System.err.println("***************\t\tTables Constructing done\t***************");
 	}

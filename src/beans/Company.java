@@ -66,8 +66,8 @@ public class Company {
 
 	@Override
 	public String toString() {
-		return "Company [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", coupons="
-				+ coupons + "]\n";
+		return "Company id=" + id + "[name=" + name + ", email=" + email + ", password=" + password + "\nCoupons=\n"
+				+ coupons + "]";
 	}
 
 }

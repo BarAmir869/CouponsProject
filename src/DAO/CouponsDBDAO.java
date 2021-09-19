@@ -32,7 +32,6 @@ public class CouponsDBDAO implements CouponsDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.execute();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         connectionPool.restoreConnection(connection);
@@ -48,14 +47,13 @@ public class CouponsDBDAO implements CouponsDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.execute();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         connectionPool.restoreConnection(connection);
     }
 
     @Override
-    public ArrayList<Coupon> getAllCoupons() throws NoSuchCategoryIdException {
+    public ArrayList<Coupon> getAllCoupons() {
         ArrayList<Coupon> coupons = new ArrayList<>();
         Connection connection = connectionPool.getConnection();
         Statement statement;
@@ -65,22 +63,26 @@ public class CouponsDBDAO implements CouponsDAO {
             ResultSet results = statement.executeQuery(sql);
             while (results.next()) // Iteration over each row / record
             {
-                int id = results.getInt("id");
-                int companyID = results.getInt("company_id");
-                Category category = Category.getCategoryByID(results.getInt("category_id"));
-                String title = results.getString("title");
-                String description = results.getString("description");
-                Timestamp startDate = results.getObject("start_date", Timestamp.class);
-                Timestamp endDate = results.getObject("end_date", Timestamp.class);
-                int amount = results.getInt("amount");
-                double price = results.getDouble("price");
-                String image = results.getString("image");
+                try {
+                    int id = results.getInt("id");
+                    int companyID = results.getInt("company_id");
+                    Category category;
+                    category = Category.getCategoryByID(results.getInt("category_id"));
+                    String title = results.getString("title");
+                    String description = results.getString("description");
+                    Timestamp startDate = results.getObject("start_date", Timestamp.class);
+                    Timestamp endDate = results.getObject("end_date", Timestamp.class);
+                    int amount = results.getInt("amount");
+                    double price = results.getDouble("price");
+                    String image = results.getString("image");
 
-                coupons.add(new Coupon(id, companyID, category, title, description, startDate, endDate, amount, price,
-                        image));
+                    coupons.add(new Coupon(id, companyID, category, title, description, startDate, endDate, amount,
+                            price, image));
+                } catch (NoSuchCategoryIdException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         connectionPool.restoreConnection(connection);
@@ -198,7 +200,6 @@ public class CouponsDBDAO implements CouponsDAO {
             results = statement.executeQuery(sql);
             isExist = results.next();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         connectionPool.restoreConnection(connection);
@@ -219,7 +220,6 @@ public class CouponsDBDAO implements CouponsDAO {
             }
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             System.out.println(e.getMessage());
         } finally {
             connectionPool.restoreConnection(connection);
@@ -265,7 +265,6 @@ public class CouponsDBDAO implements CouponsDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.execute();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         connectionPool.restoreConnection(connection);
@@ -281,7 +280,6 @@ public class CouponsDBDAO implements CouponsDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.execute();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         connectionPool.restoreConnection(connection);
@@ -296,7 +294,6 @@ public class CouponsDBDAO implements CouponsDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.execute();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

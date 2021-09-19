@@ -92,7 +92,6 @@ public class CustomerDBDAO implements CustomersDAO {
         try {
             statement = connection.createStatement();
             ResultSet results = statement.executeQuery(sql);
-
             results.next();
             int id = results.getInt("id");
             String firstName = results.getString("first_name");

@@ -1,6 +1,6 @@
 package Facade;
 
-import java.sql.SQLException;
+import Exeptions.LoginManagerException;
 
 public class LoginManager {
     public enum ClientType {
@@ -29,32 +29,25 @@ public class LoginManager {
         return instance;
     }
 
-    public ClientFacade login(String email, String password, ClientType clientType) throws SQLException {
+    public ClientFacade login(String email, String password, ClientType clientType) throws LoginManagerException {
         ClientFacade clientFacade;
         switch (clientType) {
             case ADMINISTRATOR:
-
                 clientFacade = new AdminFacade();
                 break;
             case COMPANY:
-                System.out.println("Company logged-in");
                 clientFacade = new CompanyFacade();
                 break;
             case CUSTOMER:
-                System.out.println("Customer logged-in");
                 clientFacade = new CustomerFacade();
                 break;
             default:
                 System.out.println("default clientType: null");
-                clientFacade = null;
-                // TODO throw new exception
-                break;
+                throw new LoginManagerException("Wrong Client Type");
         }
-        if (clientFacade == null)
-            return null;
         if (clientFacade.login(email, password)) {
             return clientFacade;
-        }
-        return null;
+        } else
+            throw new LoginManagerException("Wrong Email/Password!");
     }
 }

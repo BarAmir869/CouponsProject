@@ -85,7 +85,11 @@ public class ConnectionPool {
             couponsDAO = new CouponsDBDAO();
             customersDAO = new CustomerDBDAO();
             isConnected = true;
-            TablesConstructing.construct();// remove
+            try {
+                TablesConstructing.construct();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
