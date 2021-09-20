@@ -22,7 +22,9 @@ public class TablesConstructing {
 		} catch (SQLException e) {
 			System.out.println("Query is wrong, ");
 		}
+		System.out.println("***********************************************************************");
 		System.err.println("***************\t\tTables dropping done\t\t***************");
+		System.out.println("***********************************************************************");
 	}
 
 	private static void dropTable(Tables table) throws SQLException {

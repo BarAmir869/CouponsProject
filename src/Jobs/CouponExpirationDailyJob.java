@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import DAO.CouponsDAO;
 import DAO.CouponsDBDAO;
-import Exeptions.NoSuchCategoryIdException;
+import Exceptions.NoSuchCategoryIdException;
 import Test.Test;
 import beans.Coupon;
 

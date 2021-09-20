@@ -2,8 +2,8 @@ package Facade;
 
 import java.util.ArrayList;
 
-import Exeptions.FacadeException;
-import Exeptions.LoginManagerException;
+import Exceptions.FacadeException;
+import Exceptions.LoginManagerException;
 import Facade.LoginManager.ClientType;
 import beans.Company;
 import beans.Coupon;

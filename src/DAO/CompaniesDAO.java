@@ -23,5 +23,5 @@ public interface CompaniesDAO {
 
     public Company getCompany(int companyID);
 
-    public Company getCompanyByMail(String string);    
+    public Company getCompanyByMail(String string);
 }

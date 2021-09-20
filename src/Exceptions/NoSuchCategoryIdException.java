@@ -1,4 +1,4 @@
-package Exeptions;
+package Exceptions;
 
 public class NoSuchCategoryIdException extends Exception {
 

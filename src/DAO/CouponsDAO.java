@@ -2,7 +2,7 @@ package DAO;
 
 import java.util.ArrayList;
 
-import Exeptions.NoSuchCategoryIdException;
+import Exceptions.NoSuchCategoryIdException;
 import beans.Coupon;
 
 public interface CouponsDAO {

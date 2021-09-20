@@ -1,4 +1,4 @@
-package Exeptions;
+package Exceptions;
 
 public class FacadeException extends Exception {
     public FacadeException(String message) {

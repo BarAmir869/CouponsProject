@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import Exeptions.FacadeException;
-import Exeptions.LoginManagerException;
-import Exeptions.NoSuchCategoryIdException;
+import Exceptions.FacadeException;
+import Exceptions.LoginManagerException;
+import Exceptions.NoSuchCategoryIdException;
 import Facade.AdminFacade;
 import Facade.ClientFacade;
 import Facade.CompanyFacade;
@@ -56,10 +56,9 @@ public class Test {
     private static void TestAllMenu() {
         boolean exit = false;
         int option = -1;
-        Scanner input = new Scanner(System.in);
         while (!exit) {
-
             System.out.println("***********************************************************************");
+            System.out.println("***************               Bar Amir                  ***************");
             System.out.println("***************         Coupon project Tester           ***************");
             System.out.println("***************         Choose option by order          ***************");
             if (option != -1)
@@ -68,13 +67,14 @@ public class Test {
             System.out.println("***********************************************************************");
             System.out.print(staticMenu);
 
-            try {
-                option = input.nextInt();
-            } catch (InputMismatchException e) {
-                System.out.println("\n ***    Enter a number    ***");
-                option = 0;
-                input.nextInt();
-            }
+            // try {
+            // option = inputMain.nextInt();
+            option = read();
+            // } catch (InputMismatchException e) {
+            // System.out.println("\n *** Enter a number ***");
+            // option = 0;
+            // inputMain.nextInt();
+            // }
 
             switch (option) {
                 case -1:
@@ -112,7 +112,10 @@ public class Test {
                     break;
                 case 8:
                     try {
+                        System.out.println("***********************************************************************");
                         TablesConstructing.construct();
+                        System.out.println("***********************************************************************");
+
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                     }
@@ -132,8 +135,20 @@ public class Test {
                 e1.printStackTrace();
             }
             System.out.println();
+            // inputMain.close();
         }
-        // input.close();
+    }
+
+    private static int read() {
+        Scanner input = new Scanner(System.in);
+        try {
+            int num = input.nextInt();
+            return num;
+        } catch (InputMismatchException e) {
+            System.out.println("*** Enter number from the list ***");
+            read();
+        }
+        return 0;
     }
 
     private static void stopDailyJob() {
@@ -179,7 +194,7 @@ public class Test {
         private static void adminTest() {
             boolean adminExit = false;
             int option = -1;
-            Scanner input = new Scanner(System.in);
+            // Scanner input = new Scanner(System.in);
             while (!adminExit) {
                 System.out.println("***********************************************************************");
                 System.out.println("***************\t\t\t AdminFacade \t\t***************");
@@ -191,19 +206,17 @@ public class Test {
                         System.out.println(e.getMessage());
                     }
                     System.out.println("***************\t\t Administrator logged-in \t***************");
-                    // try {
-                    // } catch (Exception e) {// TODO catch specific exception
-                    // }
                 }
                 System.out.println("***********************************************************************");
                 System.out.print(staticMenu);// AdminFacade Menu
-                try {
-                    option = input.nextInt();
-                } catch (InputMismatchException e) {
-                    System.out.println("\n ***    Enter a number    ***");
-                    option = 0;
-                    input.next();
-                }
+                option = read();
+                // try {
+                // option = input.nextInt();
+                // } catch (InputMismatchException e) {
+                // System.out.println("\n *** Enter a number ***");
+                // option = 0;
+                // input.next();
+                // }
                 switch (option) {
                     case -1:
                         option = 0;
@@ -451,13 +464,14 @@ public class Test {
                 }
                 System.out.println("***********************************************************************");
                 System.out.print(staticMenu);// Company Facade Menu
-                try {
-                    option = input.nextInt();
-                } catch (InputMismatchException e) {
-                    System.out.println("\n *** Enter a number ***");
-                    option = 0;
-                    input.next();
-                }
+                option = read();
+                // try {
+                // option = input.nextInt();
+                // } catch (InputMismatchException e) {
+                // System.out.println("\n *** Enter a number ***");
+                // option = 0;
+                // input.next();
+                // }
                 if (option != 0) {
                     switch (option) {
                         case 1:
@@ -575,6 +589,7 @@ public class Test {
             } catch (NoSuchCategoryIdException e) {
                 System.out.println(e.getMessage() + ", try again");
                 // input.close();
+                // input1.close();
                 return;
             }
             System.out.println("Enter Coupon title: ");
@@ -602,6 +617,7 @@ public class Test {
             }
             System.out.println("Coupon id = " + id + " inserted ok");
             // input.close();
+            // input1.close();
         }
     }
 
@@ -617,7 +633,7 @@ public class Test {
             Scanner input = new Scanner(System.in);
             while (!adminExit) {
                 System.out.println("***********************************************************************");
-                System.out.println("***************\t\t\t CustomerFacade \t***************");
+                System.out.println("***************\t\t CustomerFacade \t\t***************");
                 System.out.println("***********************************************************************");
                 if (option == -1) {
                     job.startProcess();
@@ -647,13 +663,14 @@ public class Test {
                 }
                 System.out.println("***********************************************************************");
                 System.out.print(staticMenu);// Customer Facade Menu
-                try {
-                    option = input.nextInt();
-                } catch (InputMismatchException e) {
-                    System.out.println("\n *** Enter a number ***");
-                    option = 0;
-                    input.next();
-                }
+                option = read();
+                // try {
+                // option = input.nextInt();
+                // } catch (InputMismatchException e) {
+                // System.out.println("\n *** Enter a number ***");
+                // option = 0;
+                // input.next();
+                // }
                 if (option != 0) {
                     switch (option) {
                         case 1:

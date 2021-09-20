@@ -3,7 +3,7 @@ package Facade;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import Exeptions.FacadeException;
+import Exceptions.FacadeException;
 import beans.Category;
 import beans.Coupon;
 import beans.Customer;

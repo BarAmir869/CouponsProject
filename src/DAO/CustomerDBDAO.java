@@ -24,8 +24,7 @@ public class CustomerDBDAO implements CustomersDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.execute();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         connectionPool.restoreConnection(connection);
 
@@ -75,8 +74,7 @@ public class CustomerDBDAO implements CustomersDAO {
             customer = new Customer(customerID, firstName, lastName, email, password,
                     connectionPool.getCouponsDAO().getAllCustomerCoupons(customerID));
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         } finally {
             connectionPool.restoreConnection(connection);
         }
@@ -100,8 +98,7 @@ public class CustomerDBDAO implements CustomersDAO {
             customer = new Customer(id, firstName, lastName, email, password,
                     connectionPool.getCouponsDAO().getAllCustomerCoupons(id));
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         } finally {
             connectionPool.restoreConnection(connection);
         }
@@ -116,8 +113,7 @@ public class CustomerDBDAO implements CustomersDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.execute();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         connectionPool.restoreConnection(connection);
 
@@ -135,8 +131,7 @@ public class CustomerDBDAO implements CustomersDAO {
             results = statement.executeQuery(sql);
             isExist = results.next();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         } finally {
             connectionPool.restoreConnection(connection);
         }
@@ -168,8 +163,7 @@ public class CustomerDBDAO implements CustomersDAO {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         connectionPool.restoreConnection(connection);
 
@@ -186,8 +180,7 @@ public class CustomerDBDAO implements CustomersDAO {
             results = statement.executeQuery(sql);
             isExist = results.next();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         } finally {
             connectionPool.restoreConnection(connection);
         }

@@ -97,7 +97,7 @@ public class ConnectionPool {
      * initialized the instance of ConnectionPool if it is null and returns it,
      * return the exist instance otherwise.
      * 
-     * @return ConnectionPool
+     * @return ConnectionPool singleton instance
      */
     public static ConnectionPool getInstance() {
         if (instance == null) {
@@ -128,15 +128,12 @@ public class ConnectionPool {
             Connection connection;
             // if there is not an empty Connection, wait:
             if (numOfConnectionsAvailable == 0) {
-                synchronized (this) {// TODO the Lock Object is the singleton instance
-                    System.out.println("waiting for available Connection...");
+                synchronized (this) {
                     try {
                         wait();
                     } catch (InterruptedException e1) {
-                        // TODO Auto-generated catch block
                         System.out.println(e1.getMessage());
                     }
-                    System.out.println("Resumed...");
                 }
             }
             // after an empty Connection is reached:
@@ -164,7 +161,6 @@ public class ConnectionPool {
             synchronized (this) {
                 notify();
             }
-
         }
     }
 
@@ -181,7 +177,6 @@ public class ConnectionPool {
                         System.out.println(numOfConnections - numOfConnectionsAvailable + " " + str + " missing");
                         wait();
                     } catch (InterruptedException | IllegalMonitorStateException e) {
-                        // TODO Auto-generated catch block
                         System.out.println(e.getMessage());
                     }
                 }
@@ -190,7 +185,6 @@ public class ConnectionPool {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    // TODO Auto-generated catch block
                     System.out.println(e.getMessage());
                 }
 

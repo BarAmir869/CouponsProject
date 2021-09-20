@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-import Exeptions.NoSuchCategoryIdException;
+import Exceptions.NoSuchCategoryIdException;
 import beans.Category;
 import beans.Coupon;
 import database.ConnectionPool;

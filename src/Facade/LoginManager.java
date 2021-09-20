@@ -1,6 +1,6 @@
 package Facade;
 
-import Exeptions.LoginManagerException;
+import Exceptions.LoginManagerException;
 
 public class LoginManager {
     public enum ClientType {

@@ -2,7 +2,7 @@ package Facade;
 
 import java.util.ArrayList;
 
-import Exeptions.FacadeException;
+import Exceptions.FacadeException;
 import beans.Category;
 import beans.Company;
 import beans.Coupon;
