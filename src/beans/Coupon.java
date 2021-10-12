@@ -30,86 +30,142 @@ public class Coupon {
 		this.image = image;
 	}
 
+	/**
+	 * @return int id of the coupon
+	 */
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
+	/**
+	 * @return int id of the company that own the coupon
+	 */
 	public int getCompanyID() {
 		return companyID;
 	}
 
+	/**
+	 * @param companyID
+	 */
 	public void setCompanyID(int companyID) {
 		this.companyID = companyID;
 	}
 
+	/**
+	 * @return Category
+	 */
 	public Category getCategory() {
 		return category;
 	}
 
+	/**
+	 * @param category
+	 */
 	public void setCategory(Category category) {
 		this.category = category;
 	}
 
+	/**
+	 * @return String
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * @param title
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
+	/**
+	 * @return String
+	 */
 	public String getDescription() {
 		return description;
 	}
 
+	/**
+	 * @param description
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	/**
+	 * @return Timestamp
+	 */
 	public Timestamp getStartDate() {
 		return startDate;
 	}
 
+	/**
+	 * @param startDate
+	 */
 	public void setStartDate(Timestamp startDate) {
 		this.startDate = startDate;
 	}
 
+	/**
+	 * @return Timestamp
+	 */
 	public Timestamp getEndDate() {
 		return endDate;
 	}
 
+	/**
+	 * @param endDate
+	 */
 	public void setEndDate(Timestamp endDate) {
 		this.endDate = endDate;
 	}
 
+	/**
+	 * @return int
+	 */
 	public int getAmount() {
 		return amount;
 	}
 
+	/**
+	 * @param amount
+	 */
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
 
+	/**
+	 * @return double
+	 */
 	public double getPrice() {
 		return price;
 	}
 
+	/**
+	 * @param price
+	 */
 	public void setPrice(double price) {
 		this.price = price;
 	}
 
+	/**
+	 * @return String
+	 */
 	public String getImage() {
 		return image;
 	}
 
+	/**
+	 * @param image
+	 */
 	public void setImage(String image) {
 		this.image = image;
 	}
 
+	/**
+	 * @return int
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -118,6 +174,10 @@ public class Coupon {
 		return result;
 	}
 
+	/**
+	 * @param obj
+	 * @return boolean
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -132,6 +192,9 @@ public class Coupon {
 		return true;
 	}
 
+	/**
+	 * @return String
+	 */
 	@Override
 	public String toString() {
 		return "Coupon id=" + id + " \n[ companyID=" + companyID + ", category=" + category + ", title=" + title

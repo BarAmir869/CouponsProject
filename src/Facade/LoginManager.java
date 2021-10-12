@@ -18,6 +18,9 @@ public class LoginManager {
 
     }
 
+    /**
+     * @return LoginManager
+     */
     public static LoginManager getInstance() {
         if (instance == null) {
             synchronized (constructorLock) {
@@ -29,6 +32,13 @@ public class LoginManager {
         return instance;
     }
 
+    /**
+     * @param email
+     * @param password
+     * @param clientType
+     * @return ClientFacade
+     * @throws LoginManagerException
+     */
     public ClientFacade login(String email, String password, ClientType clientType) throws LoginManagerException {
         ClientFacade clientFacade;
         switch (clientType) {

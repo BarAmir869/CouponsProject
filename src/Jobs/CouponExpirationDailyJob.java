@@ -5,13 +5,12 @@ import java.util.ArrayList;
 
 import DAO.CouponsDAO;
 import DAO.CouponsDBDAO;
-import Exceptions.NoSuchCategoryIdException;
 import Test.Test;
 import beans.Coupon;
 
 public class CouponExpirationDailyJob implements Runnable {
     private static Object lock = new Object();
-    private boolean quit = false;
+    private boolean quit;
     private static boolean testProcess = false;
     private CouponsDAO couponsDAO;
     private static final int timeToSleep = 1000 * 3; // millis*seconds*minutes*hours*days
@@ -20,21 +19,30 @@ public class CouponExpirationDailyJob implements Runnable {
         couponsDAO = new CouponsDBDAO();
     }
 
+    /**
+     * @return boolean
+     */
     public boolean isTestProcess() {
         return testProcess;
     }
 
+    /**
+     * @param testProcess
+     */
     public void setTestProcess(boolean testProcess) {
         CouponExpirationDailyJob.testProcess = testProcess;
     }
 
+    /**
+     * @return Object
+     */
     public static Object getLock() {
         return lock;
     }
 
     @Override
     public void run() {
-        System.out.println("Daily-" + Thread.currentThread().getName() + " Start his Work!");
+        quit = false;
         while (!quit) {
             synchronized (lock) {
                 if (testProcess) {
@@ -46,13 +54,8 @@ public class CouponExpirationDailyJob implements Runnable {
                     }
                 }
             }
-            ArrayList<Coupon> coupons = new ArrayList<>();
-            try {
-                coupons = couponsDAO.getAllCoupons();
-            } catch (NoSuchCategoryIdException e1) {
-            }
-            if (coupons != null) {
-
+            ArrayList<Coupon> coupons = couponsDAO.getAllCoupons();
+            if (coupons.size() > 0) {
                 boolean expired = false;
                 Timestamp now = new Timestamp(System.currentTimeMillis());
                 for (Coupon coupon : coupons) {

@@ -31,11 +31,18 @@ public class Test {
     ConnectionPool connectionPool;
     static Job job = new Job("1");
     private static final int couponIdRange = 20000;
+    private static int jobCounter = 1;
 
+    /**
+     * @return Menus
+     */
     public static Menus getStaticMenu() {
         return staticMenu;
     }
 
+    /**
+     * @param staticMenu
+     */
     public static void setStaticMenu(Menus staticMenu) {
         Test.staticMenu = staticMenu;
     }
@@ -139,6 +146,9 @@ public class Test {
         }
     }
 
+    /**
+     * @return int
+     */
     private static int read() {
         Scanner input = new Scanner(System.in);
         try {
@@ -155,6 +165,10 @@ public class Test {
         System.out.println("***********************************************************************");
         System.out.println("***************\t\t stopDailyJob \t\t\t***************");
         System.out.println("***********************************************************************");
+        if (job == null || !job.isAlive()) {
+            System.out.println("job is not running");
+            return;
+        }
         job.stopJob();
     }
 
@@ -162,10 +176,20 @@ public class Test {
         System.out.println("***********************************************************************");
         System.out.println("***************\t\t startDailyJob \t\t\t***************");
         System.out.println("***********************************************************************");
-        Thread t = new Thread(() -> job.startJob(), "startDailyJob");
+        if (job != null)
+            if (job.isAlive()) {
+                System.out.println("job already running");
+                return;
+            }
+        job = new Job((jobCounter++) + "");
+        Thread t = new Thread(() -> job.startJob(), "startDailyJob" + (jobCounter++));
         t.start();
+        System.out.println("Daily-job Start his Work!");
     }
 
+    /**
+     * @throws InterruptedException
+     */
     private static void joinStartDailyJob() throws InterruptedException {
         ArrayList<String> names = new ArrayList<>(Arrays.asList("startDailyJob"));
         Thread.getAllStackTraces().keySet().stream().filter(t -> names.contains(t.getName())).forEach(t -> {
@@ -324,17 +348,16 @@ public class Test {
 
             // Get all customers and update random one:
             ArrayList<Customer> customers = adminFacade.getAllCustomers();
-            Customer customer = customers.get((int) (Math.random() * customers.size()));
             try {
+                Customer customer = customers.get((int) (Math.random() * customers.size()));
                 customer.setEmail("myNewEmail@customer.co.il");
                 adminFacade.updateCustomer(customer);
+                System.out.println("customer id = " + customer.getId() + " email updated to: " + customer.getEmail());
             } catch (FacadeException e1) {
                 System.out.println(e1.getMessage());
             } catch (Exception e) {// in case customer==null->customer.setEmail==exception
                 System.out.println("don't forget to add some entities...");
             }
-
-            System.out.println("customer id = " + customer.getId() + " email updated to: " + customer.getEmail());
 
             // get one and update
             Company company1;

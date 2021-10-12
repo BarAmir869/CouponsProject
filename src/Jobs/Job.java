@@ -16,16 +16,18 @@ public class Job {
     }
 
     public void startProcess() {
-        synchronized (lock) {
-            jobRunnable.setTestProcess(true);
-        }
+        if (jobThread.isAlive())
+            synchronized (lock) {
+                jobRunnable.setTestProcess(true);
+            }
     }
 
     public void endProcess() {
-        synchronized (lock) {
-            lock.notifyAll();
-            jobRunnable.setTestProcess(false);
-        }
+        if (jobThread.isAlive())
+            synchronized (lock) {
+                lock.notifyAll();
+                jobRunnable.setTestProcess(false);
+            }
     }
 
     public void stopJob() {
@@ -37,4 +39,10 @@ public class Job {
         }
     }
 
+    /**
+     * @return boolean
+     */
+    public boolean isAlive() {
+        return jobThread.isAlive();
+    }
 }

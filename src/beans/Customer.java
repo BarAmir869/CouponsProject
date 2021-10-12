@@ -22,54 +22,93 @@ public class Customer {
 		this.coupons = coupons;
 	}
 
+	/**
+	 * @return int
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * @return String
+	 */
 	public String getFirstName() {
 		return firstName;
 	}
 
+	/**
+	 * @param firstName
+	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
+	/**
+	 * @return String
+	 */
 	public String getLastName() {
 		return lastName;
 	}
 
+	/**
+	 * @param lastName
+	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
+	/**
+	 * @return String
+	 */
 	public String getEmail() {
 		return email;
 	}
 
+	/**
+	 * @param email
+	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
+	/**
+	 * @return String
+	 */
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * @param password
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
+	/**
+	 * @return ArrayList<Coupon>
+	 */
 	public ArrayList<Coupon> getCoupons() {
 		return coupons;
 	}
 
+	/**
+	 * @param coupons
+	 */
 	public void setCoupons(ArrayList<Coupon> coupons) {
 		this.coupons = coupons;
 	}
 
+	/**
+	 * @return String
+	 */
 	@Override
 	public String toString() {
 		return "Customer [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email

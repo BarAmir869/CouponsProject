@@ -27,6 +27,10 @@ public class TablesConstructing {
 		System.out.println("***********************************************************************");
 	}
 
+	/**
+	 * @param table
+	 * @throws SQLException
+	 */
 	private static void dropTable(Tables table) throws SQLException {
 		Connection connection = connectionPool.getConnection();
 		String sql = "DROP TABLE `coupon_project`.`" + table.getName() + "`;";
@@ -41,8 +45,12 @@ public class TablesConstructing {
 		}
 	}
 
+	/**
+	 * @throws SQLException
+	 */
 	public static void construct() throws SQLException {
 		try {
+			// createNewSchema(String schemaName)
 			createNewTable(Tables.COMPANIES);
 			createNewTable(Tables.CATEGORIES);
 			createNewTable(Tables.COUPONS);
@@ -55,6 +63,24 @@ public class TablesConstructing {
 		System.err.println("***************\t\tTables Constructing done\t***************");
 	}
 
+	public static void createNewSchema(String schemaName) throws SQLException {
+		Connection connection = connectionPool.getConnection();
+		String sql = "CREATE SCHEMA `coupon_project` ;";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		try {
+			preparedStatement.execute();
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			connectionPool.restoreConnection(connection);
+		}
+
+	}
+
+	/**
+	 * @param table
+	 * @throws SQLException
+	 */
 	public static void createNewTable(Tables table) throws SQLException {
 		Connection connection = connectionPool.getConnection();
 		String sql = "CREATE TABLE `coupon_project`.`" + table.getName() + "` (";
@@ -79,9 +105,11 @@ public class TablesConstructing {
 		} finally {
 			connectionPool.restoreConnection(connection);
 		}
-
 	}
 
+	/**
+	 * @param categories
+	 */
 	private static void addAllCategories(Tables categories) {
 		{
 

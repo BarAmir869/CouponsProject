@@ -20,6 +20,11 @@ public class AdminFacade extends ClientFacade {
         // customerFacade = new CustomerFacade();
     }
 
+    /**
+     * @param email
+     * @param password
+     * @return boolean
+     */
     @Override
     public boolean login(String email, String password) {
         if (email.equals("admin@admin.com") && password.equals("admin")) {
@@ -28,6 +33,10 @@ public class AdminFacade extends ClientFacade {
         return false;
     }
 
+    /**
+     * @param company
+     * @throws FacadeException
+     */
     public void addCompany(Company company) throws FacadeException {
         if (companiesDAO.isCompanyExist(company.getId()))
             throw new FacadeException("Company id = " + company.getId() + " already exist");
@@ -49,6 +58,10 @@ public class AdminFacade extends ClientFacade {
         }
     }
 
+    /**
+     * @param company
+     * @throws FacadeException
+     */
     public void updateCompany(Company company) throws FacadeException {
         if (!companiesDAO.isCompanyExist(company.getId())) {
             throw new FacadeException("Company id = " + company.getId() + " doesn't exist");
@@ -88,6 +101,10 @@ public class AdminFacade extends ClientFacade {
 
     }
 
+    /**
+     * @param companyID
+     * @throws FacadeException
+     */
     public void deleteCompany(int companyID) throws FacadeException {
         if (!companiesDAO.isCompanyExist(companyID)) {
             throw new FacadeException("Company id = " + companyID + " doesn't exist");
@@ -100,6 +117,9 @@ public class AdminFacade extends ClientFacade {
             couponsDAO.deleteCouponPurchases(coupon.getId());
     }
 
+    /**
+     * @return ArrayList<Company>
+     */
     public ArrayList<Company> getAllCompanies() {
         ArrayList<Company> companies = companiesDAO.getAllCompanies();
         for (Company company : companies) {
@@ -108,6 +128,11 @@ public class AdminFacade extends ClientFacade {
         return companies;
     }
 
+    /**
+     * @param companyID
+     * @return Company
+     * @throws FacadeException
+     */
     public Company getOneCompany(int companyID) throws FacadeException {
         if (!companiesDAO.isCompanyExist(companyID)) {
             throw new FacadeException("Company id = " + companyID + " doesn't exist");
@@ -117,6 +142,10 @@ public class AdminFacade extends ClientFacade {
         return company;
     }
 
+    /**
+     * @param customer
+     * @throws FacadeException
+     */
     public void addCustomer(Customer customer) throws FacadeException {
         if (customersDAO.isCustomerExist(customer.getId()))
             throw new FacadeException("Customer id = " + customer.getId() + " already exist");
@@ -136,6 +165,10 @@ public class AdminFacade extends ClientFacade {
 
     }
 
+    /**
+     * @param customer
+     * @throws FacadeException
+     */
     public void updateCustomer(Customer customer) throws FacadeException {
         if (customer == null) {
             System.out.println("argument was null->bug");
@@ -169,6 +202,10 @@ public class AdminFacade extends ClientFacade {
         }
     }
 
+    /**
+     * @param customerID
+     * @throws FacadeException
+     */
     public void deleteCustomer(int customerID) throws FacadeException {
         if (!customersDAO.isCustomerExist(customerID)) {
             throw new FacadeException("Customer id = " + customerID + " doesn't exist");
@@ -180,6 +217,9 @@ public class AdminFacade extends ClientFacade {
             couponsDAO.deleteAllCustomerCouponsPurchases(customerID);
     }
 
+    /**
+     * @return ArrayList<Customer>
+     */
     public ArrayList<Customer> getAllCustomers() {
         ArrayList<Customer> customers = customersDAO.getAllCustomers();
         for (Customer customer : customers) {
@@ -188,6 +228,11 @@ public class AdminFacade extends ClientFacade {
         return customers;
     }
 
+    /**
+     * @param customerID
+     * @return Customer
+     * @throws FacadeException
+     */
     public Customer getOneCustomer(int customerID) throws FacadeException {
         if (!customersDAO.isCustomerExist(customerID)) {
             throw new FacadeException("Customer id = " + customerID + " doesn't exist");

@@ -1,8 +1,6 @@
 package DAO;
 
 import java.util.ArrayList;
-
-import Exceptions.NoSuchCategoryIdException;
 import beans.Coupon;
 
 public interface CouponsDAO {
@@ -12,7 +10,7 @@ public interface CouponsDAO {
 
     public void updateCoupon(Coupon coupon);
 
-    public ArrayList<Coupon> getAllCoupons() throws NoSuchCategoryIdException;
+    public ArrayList<Coupon> getAllCoupons();
 
     public ArrayList<Coupon> getAllCompanyCoupons(int companyID);
 

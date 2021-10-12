@@ -15,6 +15,9 @@ import database.Tables;
 public class CompaniesDBDAO implements CompaniesDAO {
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
 
+    /**
+     * @param company
+     */
     @Override
     public void addCompany(Company company) {
         String email = company.getEmail();
@@ -39,6 +42,9 @@ public class CompaniesDBDAO implements CompaniesDAO {
 
     }
 
+    /**
+     * @param companyID
+     */
     @Override
     public void deleteCompany(int companyID) {
         Connection connection = connectionPool.getConnection();
@@ -56,6 +62,9 @@ public class CompaniesDBDAO implements CompaniesDAO {
 
     }
 
+    /**
+     * @return ArrayList<Company>
+     */
     @Override
     public ArrayList<Company> getAllCompanies() {
         ArrayList<Company> companies = new ArrayList<>();
@@ -83,6 +92,10 @@ public class CompaniesDBDAO implements CompaniesDAO {
         return companies;
     }
 
+    /**
+     * @param companyID
+     * @return Company
+     */
     @Override
     public Company getCompany(int companyID) {
         Connection connection = connectionPool.getConnection();
@@ -106,6 +119,10 @@ public class CompaniesDBDAO implements CompaniesDAO {
         return company;
     }
 
+    /**
+     * @param email
+     * @return Company
+     */
     @Override
     public Company getCompanyByMail(String email) {
         Connection connection = connectionPool.getConnection();
@@ -129,6 +146,11 @@ public class CompaniesDBDAO implements CompaniesDAO {
         return company;
     }
 
+    /**
+     * @param email
+     * @param password
+     * @return boolean
+     */
     @Override
     public boolean isCompanyExist(String email, String password) {
         boolean isExist = false;
@@ -151,6 +173,9 @@ public class CompaniesDBDAO implements CompaniesDAO {
         return isExist;
     }
 
+    /**
+     * @param company
+     */
     @Override
     public void updateCompany(Company company) {
         String email = company.getEmail();
@@ -172,21 +197,38 @@ public class CompaniesDBDAO implements CompaniesDAO {
         }
     }
 
+    /**
+     * @param companyID
+     * @return boolean
+     */
     @Override
     public boolean isCompanyExist(int companyID) {
         return genericIsCompanyExist("id", companyID);
     }
 
+    /**
+     * @param name
+     * @return boolean
+     */
     @Override
     public boolean isCompanyNameExist(String name) {
         return genericIsCompanyExist("name", "'" + name + "'");
     }
 
+    /**
+     * @param email
+     * @return boolean
+     */
     @Override
     public boolean isCompanyEmailExist(String email) {
         return genericIsCompanyExist("email", "'" + email + "'");
     }
 
+    /**
+     * @param column
+     * @param object
+     * @return boolean
+     */
     private <T> boolean genericIsCompanyExist(String column, T object) {
         Connection connection = connectionPool.getConnection();
         String sql = "select id, name, email, password FROM companies WHERE " + column + "=" + object;

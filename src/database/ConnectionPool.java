@@ -34,7 +34,6 @@ public class ConnectionPool {
     // synchronized locks
     private static Object getConnectionLock = new Object();
     private static Object constructorLock = new Object();
-    private static Object setLock = new Object();
     // Dao interfaces
     private CompaniesDAO companiesDAO;
     private CouponsDAO couponsDAO;
@@ -138,7 +137,7 @@ public class ConnectionPool {
             }
             // after an empty Connection is reached:
             connection = connectionsAvailable.iterator().next();
-            synchronized (setLock) {
+            synchronized (connectionsAvailable) {
                 connectionsAvailable.remove(connection);
                 numOfConnectionsAvailable--;
             }
@@ -155,7 +154,7 @@ public class ConnectionPool {
      *                   connectionsAvailable.
      */
     public void restoreConnection(Connection connection) {
-        synchronized (setLock) {
+        synchronized (connectionsAvailable) {
             connectionsAvailable.add(connection);
             numOfConnectionsAvailable++;
             synchronized (this) {

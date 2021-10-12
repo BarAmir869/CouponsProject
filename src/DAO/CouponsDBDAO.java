@@ -17,6 +17,9 @@ public class CouponsDBDAO implements CouponsDAO {
 
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
 
+    /**
+     * @param coupon
+     */
     @Override
     public void addCoupon(Coupon coupon) {
         // get connection from ConnectionPool:
@@ -38,6 +41,10 @@ public class CouponsDBDAO implements CouponsDAO {
 
     }
 
+    /**
+     * @param CustomerID
+     * @param CouponID
+     */
     @Override
     public void addCouponPurchase(int CustomerID, int CouponID) {
         Connection connection = connectionPool.getConnection();
@@ -52,6 +59,9 @@ public class CouponsDBDAO implements CouponsDAO {
         connectionPool.restoreConnection(connection);
     }
 
+    /**
+     * @return ArrayList<Coupon>
+     */
     @Override
     public ArrayList<Coupon> getAllCoupons() {
         ArrayList<Coupon> coupons = new ArrayList<>();
@@ -89,6 +99,10 @@ public class CouponsDBDAO implements CouponsDAO {
         return coupons;
     }
 
+    /**
+     * @param companyID
+     * @return ArrayList<Coupon>
+     */
     @Override
     public ArrayList<Coupon> getAllCompanyCoupons(int companyID) {
         ArrayList<Coupon> coupons = new ArrayList<>();
@@ -123,6 +137,10 @@ public class CouponsDBDAO implements CouponsDAO {
         return coupons;
     }
 
+    /**
+     * @param customerID
+     * @return ArrayList<Coupon>
+     */
     @Override
     public ArrayList<Coupon> getAllCustomerCoupons(int customerID) {
         ArrayList<Coupon> coupons = new ArrayList<>();
@@ -157,6 +175,10 @@ public class CouponsDBDAO implements CouponsDAO {
         return coupons;
     }
 
+    /**
+     * @param couponID
+     * @return Coupon
+     */
     @Override
     public Coupon getOneCoupon(int couponID) {
         Connection connection = connectionPool.getConnection();
@@ -188,6 +210,10 @@ public class CouponsDBDAO implements CouponsDAO {
         return null;
     }
 
+    /**
+     * @param couponID
+     * @return boolean
+     */
     @Override
     public boolean isCouponExist(int couponID) {
         Connection connection = connectionPool.getConnection();
@@ -206,6 +232,11 @@ public class CouponsDBDAO implements CouponsDAO {
         return isExist;
     }
 
+    /**
+     * @param couponID
+     * @param companyID
+     * @return boolean
+     */
     @Override
     public boolean isCouponExist(int couponID, int companyID) {
         Connection connection = connectionPool.getConnection();
@@ -227,6 +258,11 @@ public class CouponsDBDAO implements CouponsDAO {
         return false;
     }
 
+    /**
+     * @param companyID
+     * @param title
+     * @return boolean
+     */
     @Override
     public boolean isTitleExist(int companyID, String title) {
         for (Coupon coupon : getAllCompanyCoupons(companyID)) {
@@ -236,6 +272,9 @@ public class CouponsDBDAO implements CouponsDAO {
         return false;
     }
 
+    /**
+     * @param coupon
+     */
     @Override
     public void updateCoupon(Coupon coupon) {
         Connection connection = connectionPool.getConnection();
@@ -257,6 +296,9 @@ public class CouponsDBDAO implements CouponsDAO {
 
     }
 
+    /**
+     * @param couponID
+     */
     @Override
     public void deleteCoupon(int couponID) {
         Connection connection = connectionPool.getConnection();
@@ -271,6 +313,10 @@ public class CouponsDBDAO implements CouponsDAO {
 
     }
 
+    /**
+     * @param CustomerID
+     * @param CouponID
+     */
     @Override
     public void deleteCouponPurchase(int CustomerID, int CouponID) {
         Connection connection = connectionPool.getConnection();
@@ -286,6 +332,9 @@ public class CouponsDBDAO implements CouponsDAO {
 
     }
 
+    /**
+     * @param customerID
+     */
     @Override
     public void deleteAllCustomerCouponsPurchases(int customerID) {
         Connection connection = connectionPool.getConnection();
@@ -301,6 +350,9 @@ public class CouponsDBDAO implements CouponsDAO {
 
     }
 
+    /**
+     * @param companyID
+     */
     @Override
     public void deleteCompanyCoupons(int companyID) {
         Connection connection = connectionPool.getConnection();
@@ -316,6 +368,9 @@ public class CouponsDBDAO implements CouponsDAO {
 
     }
 
+    /**
+     * @param couponID
+     */
     @Override
     public void deleteCouponPurchases(int couponID) {
         Connection connection = connectionPool.getConnection();

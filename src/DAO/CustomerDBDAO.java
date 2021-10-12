@@ -12,6 +12,9 @@ import database.ConnectionPool;
 public class CustomerDBDAO implements CustomersDAO {
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
 
+    /**
+     * @param customer
+     */
     @Override
     public void addCustomer(Customer customer) {
         // get connection from ConnectionPool:
@@ -30,6 +33,9 @@ public class CustomerDBDAO implements CustomersDAO {
 
     }
 
+    /**
+     * @return ArrayList<Customer>
+     */
     @Override
     public ArrayList<Customer> getAllCustomers() {
         ArrayList<Customer> customers = new ArrayList<>();
@@ -57,6 +63,10 @@ public class CustomerDBDAO implements CustomersDAO {
         return customers;
     }
 
+    /**
+     * @param customerID
+     * @return Customer
+     */
     @Override
     public Customer getOneCustomer(int customerID) {
         Connection connection = connectionPool.getConnection();
@@ -81,6 +91,10 @@ public class CustomerDBDAO implements CustomersDAO {
         return customer;
     }
 
+    /**
+     * @param email
+     * @return Customer
+     */
     @Override
     public Customer getCustomerByMail(String email) {
         Connection connection = connectionPool.getConnection();
@@ -105,6 +119,9 @@ public class CustomerDBDAO implements CustomersDAO {
         return customer;
     }
 
+    /**
+     * @param customerID
+     */
     @Override
     public void deleteCustomer(int customerID) {
         Connection connection = connectionPool.getConnection();
@@ -119,6 +136,11 @@ public class CustomerDBDAO implements CustomersDAO {
 
     }
 
+    /**
+     * @param email
+     * @param password
+     * @return boolean
+     */
     @Override
     public boolean isCustomerExist(String email, String password) {
         Connection connection = connectionPool.getConnection();
@@ -138,16 +160,27 @@ public class CustomerDBDAO implements CustomersDAO {
         return isExist;
     }
 
+    /**
+     * @param email
+     * @return boolean
+     */
     @Override
     public boolean isCustomerEmailExist(String email) {
         return genericIsCustomerExist("email", "'" + email + "'");
     }
 
+    /**
+     * @param customerID
+     * @return boolean
+     */
     @Override
     public boolean isCustomerExist(int customerID) {
         return genericIsCustomerExist("id", customerID);
     }
 
+    /**
+     * @param customer
+     */
     @Override
     public void updateCustomer(Customer customer) {
         int id = customer.getId();
@@ -169,6 +202,11 @@ public class CustomerDBDAO implements CustomersDAO {
 
     }
 
+    /**
+     * @param column
+     * @param object
+     * @return boolean
+     */
     private <T> boolean genericIsCustomerExist(String column, T object) {
         Connection connection = connectionPool.getConnection();
         String sql = "select * FROM customers WHERE " + column + "=" + object;

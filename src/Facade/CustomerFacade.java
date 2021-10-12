@@ -15,6 +15,11 @@ public class CustomerFacade extends ClientFacade {
         super();
     }
 
+    /**
+     * @param email
+     * @param password
+     * @return boolean
+     */
     @Override
     public boolean login(String email, String password) {
         if (customersDAO.isCustomerExist(email, password)) {
@@ -24,6 +29,10 @@ public class CustomerFacade extends ClientFacade {
         return false;
     }
 
+    /**
+     * @param coupon
+     * @throws FacadeException
+     */
     public void purchaseCoupon(Coupon coupon) throws FacadeException {
 
         if (isPurchaseExist(coupon.getId(), customerID)) {
@@ -42,6 +51,11 @@ public class CustomerFacade extends ClientFacade {
         couponsDAO.updateCoupon(coupon);
     }
 
+    /**
+     * @param couponID
+     * @param customerID
+     * @return boolean
+     */
     private boolean isPurchaseExist(int couponID, int customerID) {
         ArrayList<Coupon> purchases = couponsDAO.getAllCustomerCoupons(customerID);
         for (Coupon purchase : purchases) {
@@ -51,10 +65,17 @@ public class CustomerFacade extends ClientFacade {
         return false;
     }
 
+    /**
+     * @return ArrayList<Coupon>
+     */
     public ArrayList<Coupon> getCustomerCoupons() {
         return couponsDAO.getAllCustomerCoupons(customerID);
     }
 
+    /**
+     * @param category
+     * @return ArrayList<Coupon>
+     */
     public ArrayList<Coupon> getCustomerCoupons(Category category) {
         ArrayList<Coupon> coupons = couponsDAO.getAllCustomerCoupons(customerID);
         ArrayList<Coupon> filteredCoupons = new ArrayList<>();
@@ -65,6 +86,10 @@ public class CustomerFacade extends ClientFacade {
         return filteredCoupons;
     }
 
+    /**
+     * @param maxPrice
+     * @return ArrayList<Coupon>
+     */
     public ArrayList<Coupon> getCustomerCoupons(double maxPrice) {
         ArrayList<Coupon> coupons = couponsDAO.getAllCustomerCoupons(customerID);
         ArrayList<Coupon> filteredCoupons = new ArrayList<>();
@@ -75,6 +100,10 @@ public class CustomerFacade extends ClientFacade {
         return filteredCoupons;
     }
 
+    /**
+     * @return Customer
+     * @throws FacadeException
+     */
     public Customer getCustomerDetails() throws FacadeException {
         if (!customersDAO.isCustomerExist(customerID))
             throw new FacadeException("Customer doesn't exist");

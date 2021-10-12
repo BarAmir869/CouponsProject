@@ -15,10 +15,18 @@ public class CompanyFacade extends ClientFacade {
         super();
     }
 
+    /**
+     * @return int
+     */
     public int getCompanyID() {
         return companyID;
     }
 
+    /**
+     * @param email
+     * @param password
+     * @return boolean
+     */
     @Override
     public boolean login(String email, String password) {
         if (companiesDAO.isCompanyExist(email, password)) {
@@ -28,6 +36,10 @@ public class CompanyFacade extends ClientFacade {
         return false;
     }
 
+    /**
+     * @param coupon
+     * @throws FacadeException
+     */
     public void addCoupon(Coupon coupon) throws FacadeException {
         if (couponsDAO.isTitleExist(companyID, coupon.getTitle())) {
             throw new FacadeException(
@@ -39,6 +51,10 @@ public class CompanyFacade extends ClientFacade {
         couponsDAO.addCoupon(coupon);
     }
 
+    /**
+     * @param coupon
+     * @throws FacadeException
+     */
     public void updateCoupon(Coupon coupon) throws FacadeException {// TODO Coupon coupon or int id??
         // for (Coupon coupon2 : couponsDAO.getAllCompanyCoupons(companyID)) {
         // if (!couponsDAO.isCouponExist(coupon2.getId())) {
@@ -53,6 +69,10 @@ public class CompanyFacade extends ClientFacade {
         couponsDAO.updateCoupon(coupon);
     }
 
+    /**
+     * @param couponID
+     * @throws FacadeException
+     */
     public void deleteCoupon(int couponID) throws FacadeException {
         if (!couponsDAO.isCouponExist(couponID, companyID)) {
             throw new FacadeException("Coupon id = " + couponID + " doesn't exist");
@@ -61,6 +81,11 @@ public class CompanyFacade extends ClientFacade {
         couponsDAO.deleteCouponPurchases(couponID);
     }
 
+    /**
+     * @param couponID
+     * @return Coupon
+     * @throws FacadeException
+     */
     public Coupon getCoupon(int couponID) throws FacadeException {
 
         if (!couponsDAO.isCouponExist(couponID, companyID)) {
@@ -69,10 +94,17 @@ public class CompanyFacade extends ClientFacade {
         return couponsDAO.getOneCoupon(couponID);
     }
 
+    /**
+     * @return ArrayList<Coupon>
+     */
     public ArrayList<Coupon> getCompanyCoupons() {
         return couponsDAO.getAllCompanyCoupons(companyID);
     }
 
+    /**
+     * @param category
+     * @return ArrayList<Coupon>
+     */
     public ArrayList<Coupon> getCompanyCoupons(Category category) {
         ArrayList<Coupon> coupons = couponsDAO.getAllCompanyCoupons(companyID);
         ArrayList<Coupon> filteredCoupons = new ArrayList<>();
@@ -83,6 +115,10 @@ public class CompanyFacade extends ClientFacade {
         return filteredCoupons;
     }
 
+    /**
+     * @param maxPrice
+     * @return ArrayList<Coupon>
+     */
     public ArrayList<Coupon> getCompanyCoupons(double maxPrice) {
         ArrayList<Coupon> coupons = couponsDAO.getAllCompanyCoupons(companyID);
         ArrayList<Coupon> filteredCoupons = new ArrayList<>();
@@ -93,6 +129,10 @@ public class CompanyFacade extends ClientFacade {
         return filteredCoupons;
     }
 
+    /**
+     * @return Company
+     * @throws FacadeException
+     */
     public Company getCompanyDetails() throws FacadeException {
         if (!companiesDAO.isCompanyExist(companyID))
             throw new FacadeException("Company id = " + companyID + " doesn't exist");
