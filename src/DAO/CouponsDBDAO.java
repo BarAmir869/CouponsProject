@@ -42,6 +42,7 @@ public class CouponsDBDAO implements CouponsDAO {
     }
 
     /**
+     * descriptions
      * @param CustomerID
      * @param CouponID
      */

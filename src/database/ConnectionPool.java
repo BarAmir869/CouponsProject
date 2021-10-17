@@ -30,7 +30,7 @@ public class ConnectionPool {
     private static final int numOfConnections = 10;
     // Set of Connections
     private Set<Connection> connectionsAvailable;
-    private int numOfConnectionsAvailable;
+    // private int connectionsAvailable.size();
     // synchronized locks
     private static Object getConnectionLock = new Object();
     private static Object constructorLock = new Object();
@@ -79,7 +79,7 @@ public class ConnectionPool {
                     ConnectMessage = false;
                 }
             }
-            numOfConnectionsAvailable = numOfConnections;
+            // connectionsAvailable.size() = numOfConnections;
             companiesDAO = new CompaniesDBDAO();
             couponsDAO = new CouponsDBDAO();
             customersDAO = new CustomerDBDAO();
@@ -126,7 +126,7 @@ public class ConnectionPool {
         synchronized (getConnectionLock) {
             Connection connection;
             // if there is not an empty Connection, wait:
-            if (numOfConnectionsAvailable == 0) {
+            if (connectionsAvailable.size() == 0) {
                 synchronized (this) {
                     try {
                         wait();
@@ -139,7 +139,7 @@ public class ConnectionPool {
             connection = connectionsAvailable.iterator().next();
             synchronized (connectionsAvailable) {
                 connectionsAvailable.remove(connection);
-                numOfConnectionsAvailable--;
+                // connectionsAvailable.size()--;
             }
             return connection;
 
@@ -156,7 +156,7 @@ public class ConnectionPool {
     public void restoreConnection(Connection connection) {
         synchronized (connectionsAvailable) {
             connectionsAvailable.add(connection);
-            numOfConnectionsAvailable++;
+            // connectionsAvailable.size()++;
             synchronized (this) {
                 notify();
             }
@@ -168,12 +168,12 @@ public class ConnectionPool {
      */
     public void closeAllConnectionsAvailable() {
         synchronized (getConnectionLock) {
-            while (numOfConnectionsAvailable != numOfConnections) {
+            while (connectionsAvailable.size() != numOfConnections) {
                 synchronized (this) {
                     try {
                         System.out.println("waiting for Threads to finish job");
-                        String str = (numOfConnections - numOfConnectionsAvailable) == 1 ? "is" : "are";
-                        System.out.println(numOfConnections - numOfConnectionsAvailable + " " + str + " missing");
+                        String str = (numOfConnections - connectionsAvailable.size()) == 1 ? "is" : "are";
+                        System.out.println(numOfConnections - connectionsAvailable.size() + " " + str + " missing");
                         wait();
                     } catch (InterruptedException | IllegalMonitorStateException e) {
                         System.out.println(e.getMessage());
@@ -207,9 +207,9 @@ public class ConnectionPool {
     /**
      * @return int The number of available connections we have right now
      */
-    public int getNumOfConnectionsAvailable() {
+    public int getNumConnectionsAvailable() {
         synchronized (instance) {
-            return numOfConnectionsAvailable;
+            return connectionsAvailable.size();
         }
     }
 

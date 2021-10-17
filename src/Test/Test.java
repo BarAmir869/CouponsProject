@@ -196,7 +196,6 @@ public class Test {
             try {
                 t.join();
             } catch (InterruptedException e) {
-                // TODO ask Rami what to do with interruptedException
                 e.printStackTrace();
             }
         });

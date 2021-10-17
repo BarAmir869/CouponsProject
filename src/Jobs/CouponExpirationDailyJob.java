@@ -48,7 +48,7 @@ public class CouponExpirationDailyJob implements Runnable {
                 if (testProcess) {
                     try {
                         lock.wait();
-                        System.out.println("waking up...");
+                        // System.out.println("waking up...");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
